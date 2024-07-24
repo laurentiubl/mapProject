@@ -1,27 +1,50 @@
-# MapProject
+![image](https://github.com/user-attachments/assets/aed0fd89-5780-44f9-8431-580e479dedfe)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+# mapProject
+This project is an Angular component for viewing objectives on a map using OpenLayers.
 
-## Development server
+**Angular Material**: pentru componente UI.
+- **OpenLayers**: pentru integrarea hărților interactive.
+- **AuthService și LoginComponent**: pentru gestionarea autentificării.
+- **AuthGuard**: pentru protejarea rutelor.
+- **CoordonateService**: pentru accesarea unui API și preluarea țărilor pe baza coordonatelor.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Funcționalități
 
-## Code scaffolding
+### 1. Sistem de Login
+- **AuthService**: gestionează autentificarea utilizatorilor.
+- **LoginComponent**: componenta de login.
+- **AuthGuard**: protejează rutele pentru a permite accesul doar utilizatorilor autentificați.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 2. Dashboard Component
+După autentificare, utilizatorii sunt redirecționați către componenta `Dashboard`. Aici sunt afișate obiectivele pe hartă și sunt oferite diverse interacțiuni. În cadrul metodei `ngOnInit`, sunt apelate `this.setMap()` și `this.loadObjectives()`.
 
-## Build
+#### Metode
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. **setMap()**
+    - Inițializează `vectorSource` cu features din `geojsonObject`.
+    - Inițializează harta `Map` cu un `vectorLayer`.
+    - Adaugă listeneri pentru evenimentele `pointermove` și `click` pe hartă:
+       
+        this.map.on('pointermove', this.pointermove.bind(this));
+        this.map.on('click', this.clickMap.bind(this));
+     
+    
+2. **loadObjectives()**
+    - Încarcă obiectivele din `MOCK_OBJ`.
+    - Pentru fiecare obiectiv, creează un `Feature` cu un stil personalizat și îl adaugă în `vectorSource`.
 
-## Running unit tests
+3. **clickMap(event)**
+    - Actualizează coordonatele `marked` cu cele ale evenimentului click.
+    - Pentru fiecare feature de la pixelul selectat:
+        - Setează un nou stil.
+        - Verifică dacă unul dintre obiectivele din `MOCK_OBJ` se află în poligonul selectat.
+        - Dacă obiectivul este găsit în poligon:
+            - Schimbă stilul obiectivului.
+            - Defineste un nou marker pe hartă.
+            - Calculează distanța dintre obiectiv și markerul inițializat.
+            - Adaugă markerul în `vectorSource`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+4. **pointermove(event)**
+    - Dacă utilizatorul face hover peste un obiectiv (`feature`), se deschide un popup și se face track de acțiune.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
