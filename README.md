@@ -1,4 +1,5 @@
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/aed0fd89-5780-44f9-8431-580e479dedfe)
+
 # mapProject
 This project is an Angular component for viewing objectives on a map using OpenLayers.
 
