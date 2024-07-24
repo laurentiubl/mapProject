@@ -13,7 +13,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<boolean> {
     return of(this.users).pipe(
-      // delay(1000),
+       delay(1000),
       map(users => {
         const user = users.find(u => u.username === username && u.password === password);
         this.loggedIn = !!user;
