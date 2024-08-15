@@ -1,50 +1,43 @@
 ![image](https://github.com/user-attachments/assets/aed0fd89-5780-44f9-8431-580e479dedfe)
 
-# mapProject
-This project is an Angular component for viewing objectives on a map using OpenLayers.
+Hoe to use OpenLayers in maps
+## Functionalities
 
-**Angular Material**: pentru componente UI.
-- **OpenLayers**: pentru integrarea hărților interactive.
-- **AuthService și LoginComponent**: pentru gestionarea autentificării.
-- **AuthGuard**: pentru protejarea rutelor.
-- **CoordonateService**: pentru accesarea unui API și preluarea țărilor pe baza coordonatelor.
-
-## Funcționalități
-
-### 1. Sistem de Login
-- **AuthService**: gestionează autentificarea utilizatorilor.
-- **LoginComponent**: componenta de login.
-- **AuthGuard**: protejează rutele pentru a permite accesul doar utilizatorilor autentificați.
+### 1. Login System
+- **AuthService**: Manages user authentication.
+- **LoginComponent**: The login component.
+- **AuthGuard**: Protects routes to ensure access is granted only to authenticated users.
 
 ### 2. Dashboard Component
-După autentificare, utilizatorii sunt redirecționați către componenta `Dashboard`. Aici sunt afișate obiectivele pe hartă și sunt oferite diverse interacțiuni. În cadrul metodei `ngOnInit`, sunt apelate `this.setMap()` și `this.loadObjectives()`.
+After authentication, users are redirected to the `Dashboard` component. Here, objectives are displayed on the map, and various interactions are provided. Within the `ngOnInit` method, `this.setMap()` and `this.loadObjectives()` are called.
 
-#### Metode
+#### Methods
 
 1. **setMap()**
-    - Inițializează `vectorSource` cu features din `geojsonObject`.
-    - Inițializează harta `Map` cu un `vectorLayer`.
-    - Adaugă listeneri pentru evenimentele `pointermove` și `click` pe hartă:
+    - Initializes `vectorSource` with features from the `geojsonObject`.
+    - Sets up the `Map` with a `vectorLayer`.
+    - Adds listeners for `pointermove` and `click` events on the map:
        
+        ```typescript
         this.map.on('pointermove', this.pointermove.bind(this));
         this.map.on('click', this.clickMap.bind(this));
-     
+        ```
     
 2. **loadObjectives()**
-    - Încarcă obiectivele din `MOCK_OBJ`.
-    - Pentru fiecare obiectiv, creează un `Feature` cu un stil personalizat și îl adaugă în `vectorSource`.
+    - Loads objectives from `MOCK_OBJ`.
+    - For each objective, creates a `Feature` with a custom style and adds it to `vectorSource`.
 
 3. **clickMap(event)**
-    - Actualizează coordonatele `marked` cu cele ale evenimentului click.
-    - Pentru fiecare feature de la pixelul selectat:
-        - Setează un nou stil.
-        - Verifică dacă unul dintre obiectivele din `MOCK_OBJ` se află în poligonul selectat.
-        - Dacă obiectivul este găsit în poligon:
-            - Schimbă stilul obiectivului.
-            - Defineste un nou marker pe hartă.
-            - Calculează distanța dintre obiectiv și markerul inițializat.
-            - Adaugă markerul în `vectorSource`.
+    - Updates `marked` coordinates with the event click coordinates.
+    - For each feature at the selected pixel:
+        - Sets a new style.
+        - Checks if any of the objectives in `MOCK_OBJ` are within the selected polygon.
+        - If an objective is found in the polygon:
+            - Changes the objective's style.
+            - Defines a new marker on the map.
+            - Calculates the distance between the objective and the initialized marker.
+            - Adds the marker to `vectorSource`.
 
 4. **pointermove(event)**
-    - Dacă utilizatorul face hover peste un obiectiv (`feature`), se deschide un popup și se face track de acțiune.
+    - If the user hovers over an objective (`feature`), a popup opens, and the action is tracked.
 
